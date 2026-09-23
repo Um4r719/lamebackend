@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+<meta name="theme-color" content="#FFF200" />
+<title>Lame VPN — Admin Panel</title>
+<link rel="icon" type="image/png" href="icons/icon48.png" />
+<style>
+  /* =====================================================
+     Lame VPN Admin — Professional Styles
+     Design By Umar Rehman
+     ===================================================== */
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --lemon: #FFF200;
+    --lemon-dark: #E6C200;
+    --lemon-deep: #C9A500;
+    --lemon-bg: #FFFDF0;
+    --lemon-soft: #FFF9C4;
+    --ink: #1F2933;
+    --ink-soft: #52606D;
+    --muted: #9AA5B1;
+    --green: #22C55E;
+    --green-dark: #16A34A;
+    --red: #EF4444;
+    --orange: #F59E0B;
+    --blue: #3B82F6;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,.06);
+    --shadow-md: 0 8px 24px rgba(0,0,0,.1);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,.15);
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-lg: 20px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background:
+      radial-gradient(circle at 90% 0%, rgba(255,242,0,.15), transparent 50%),
+      radial-gradient(circle at 0% 100%, rgba(255,242,0,.1), transparent 50%),
+      #F8F9FA;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  /* ============ RESPONSIVE BASE ============ */
+  @media (max-width: 900px) { body { padding: 16px; } }
+  @media (max-width: 600px) { body { padding: 12px; } }
+  @media (max-width: 400px) { body { padding: 8px; } }
+
+  /* ============ LOGIN SCREEN ============ */
+  .login-wrapper {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .login-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 40px 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--lemon);
+    animation: cardIn .5s cubic-bezier(.2,.9,.3,1.2) both;
+  }
+  @media (max-width: 480px) {
+    .login-card { padding: 32px 22px; border-radius: 16px; }
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px) scale(.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .login-brand { text-align: center; margin-bottom: 28px; }
+  .login-brand .icon {
+    width: 76px; height: 76px;
+    display: grid;
+    place-items: center;
+    border-radius: 20px;
+    margin: 0 auto 14px;
+    background: linear-gradient(135deg, var(--lemon), var(--lemon-dark));
+    box-shadow: 0 8px 24px rgba(230,194,0,.4);
+    animation: pulse 2s infinite;
+    overflow: hidden;
+  }
+  .login-brand .icon img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.05) rotate(-3deg); }
+  }
+
+  .login-brand h1 {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 4px;
+    letter-spacing: .3px;
+  }
+  .login-brand p {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    letter-spacing: .2px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 13px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    border: 2px solid #E5E7EB;
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    background: #fff;
+    color: var(--ink);
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--lemon-dark);
+    box-shadow: 0 0 0 4px rgba(255,242,0,.3);
+  }
+  .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 900;
+    font-family: inherit;
+    background: linear-gradient(135deg, var(--lemon), var(--lemon-dark));
+    color: var(--ink);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    letter-spacing: .5px;
+    margin-top: 8px;
+  }
+  .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(230,194,0,.5); }
+  .login-btn:active { transform: translateY(0); }
+  .login-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+  .login-error {
+    background: #FEE2E2;
+    color: #991B1B;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 12px;
+    text-align: center;
+    display: none;
+  }
+  .login-error.show { display: block; animation: shake .4s ease; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25%     { transform: translateX(-6px); }
+    75%     { transform: translateX(6px); }
+  }
+
+  .login-footer {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .login-footer a { color: var(--lemon-deep); text-decoration: none; font-weight: 800; }
+  .login-footer a:hover { text-decoration: underline; }
+
+  /* ============ ADMIN PANEL ============ */
+  #adminPanel { display: none; max-width: 1240px; margin: 0 auto; }
+  #adminPanel.active { display: block; animation: fadeIn .4s ease both; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ---------- Header ---------- */
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--lemon), var(--lemon-dark));
+    padding: 16px 22px;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(230,194,0,.35);
+    margin-bottom: 20px;
+    position: sticky;
+    top: 12px;
+    z-index: 100;
+  }
+  @media (max-width: 600px) {
+    .admin-header { padding: 12px 14px; top: 8px; }
+  }
+
+  .admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 900;
+    min-width: 0;
+  }
+  .admin-brand .icon {
+    font-size: 24px;
+    background: #fff;
+    width: 40px; height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,.1);
+  }
+  .admin-brand span:last-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  @media (max-width: 500px) {
+    .admin-brand span:last-child { font-size: 15px; }
+    .admin-brand .icon { width: 34px; height: 34px; font-size: 20px; }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .auth-status {
+    font-size: 12px;
+    font-weight: 700;
+    background: rgba(255,255,255,.7);
+    padding: 6px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  @media (max-width: 500px) {
+    .auth-status { display: none; }
+  }
+
+  .logout-btn {
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .2s, transform .2s;
+    white-space: nowrap;
+  }
+  .logout-btn:hover { background: #0F1720; transform: translateY(-1px); }
+  @media (max-width: 500px) {
+    .logout-btn { padding: 7px 10px; font-size: 11px; }
+  }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 6px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs::-webkit-scrollbar { height: 0; }
+
+  .tab {
+    flex: 1;
+    min-width: 130px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 800;
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all .2s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .tab:hover { background: var(--lemon-bg); }
+  .tab.active {
+    background: linear-gradient(135deg, var(--lemon), var(--lemon-dark));
+    color: var(--ink);
+    box-shadow: 0 4px 12px rgba(230,194,0,.3);
+  }
+  @media (max-width: 500px) {
+    .tab { padding: 10px 12px; font-size: 12px; min-width: 110px; }
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn .3s ease; }
+
+  /* ---------- Layout Grid ---------- */
+  .container {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 950px) {
+    .container { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #F0F0F0;
+    margin-bottom: 16px;
+    transition: box-shadow .2s;
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+  @media (max-width: 500px) {
+    .card { padding: 16px; margin-bottom: 14px; }
+  }
+
+  .card h2 {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 500px) {
+    .card h2 { font-size: 14px; }
+  }
+
+  .card h2 .badge {
+    font-size: 10px;
+    font-weight: 800;
+    background: var(--lemon);
+    padding: 3px 8px;
+    border-radius: 999px;
+    margin-left: auto;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 500px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: inherit;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: transform .15s, box-shadow .2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--lemon), var(--lemon-dark));
+    color: var(--ink);
+    box-shadow: 0 4px 12px rgba(230,194,0,.35);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 18px rgba(230,194,0,.5); }
+
+  .btn-dark { background: var(--ink); color: #fff; }
+  .btn-dark:hover { background: #0F1720; }
+
+  .btn-danger { background: var(--red); color: #fff; }
+  .btn-danger:hover { background: #DC2626; }
+
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-green:hover { background: var(--green-dark); }
+
+  .btn-sm {
+    width: auto;
+    padding: 6px 10px;
+    font-size: 11px;
+    margin: 0 2px;
+  }
+
+  /* ---------- Tables ---------- */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -20px;
+    padding: 0 20px;
+  }
+  @media (max-width: 500px) {
+    .table-wrap { margin: 0 -16px; padding: 0 16px; }
+  }
+
+  .codes-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    min-width: 600px;
+  }
+
+  .codes-table th {
+    text-align: left;
+    padding: 12px 10px;
+    font-weight: 800;
+    color: var(--ink-soft);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    border-bottom: 2px solid #F0F0F0;
+    white-space: nowrap;
+    background: #fff;
+    position: sticky;
+    top: 0;
+  }
+
+  .codes-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #F5F5F5;
+    vertical-align: middle;
+  }
+
+  .codes-table tr:hover { background: #FFFDF0; }
+
+  .code-cell {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: var(--lemon-soft);
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    cursor: pointer;
+    transition: all .2s;
+    user-select: all;
+  }
+  .code-cell:hover { background: var(--lemon); transform: scale(1.03); }
+  .code-cell:active { transform: scale(.98); }
+
+  /* ---------- Status Pills ---------- */
+  .status-pill {
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 999px;
+    white-space: nowrap;
+    display: inline-block;
+    letter-spacing: .3px;
+  }
+  .status-pill.active { background: #DCFCE7; color: #166534; }
+  .status-pill.expired { background: #FEE2E2; color: #991B1B; }
+  .status-pill.unused { background: #FEF3C7; color: #92400E; }
+  .status-pill.full { background: #FEE2E2; color: #991B1B; }
+  .status-pill.pro { background: linear-gradient(135deg, #FFF200, #E6C200); color: #7C4A00; }
+  .status-pill.free { background: #D1FAE5; color: #065F46; }
+
+  /* ---------- Device Bar ---------- */
+  .device-bar {
+    width: 60px;
+    height: 6px;
+    background: #F0F0F0;
+    border-radius: 999px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .device-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--lemon), var(--lemon-dark));
+    border-radius: 999px;
+    transition: width .3s;
+  }
+  .device-bar-inner.full {
+    background: linear-gradient(90deg, var(--orange), var(--red));
+  }
+
+  /* ---------- Stats ---------- */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 500px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  }
+
+  .stat-box {
+    background: #fff;
+    padding: 14px;
+    border-radius: var(--radius);
+    border: 1px solid #F0F0F0;
+    text-align: center;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .stat-box:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+  .stat-box .num {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, var(--ink), var(--ink-soft));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-box .lbl {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ---------- Modals ---------- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(31,41,51,.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: grid;
+    place-items: center;
+    z-index: 9999;
+    padding: 20px;
+    animation: fadeIn .25s ease;
+  }
+  .modal-overlay[hidden] { display: none; }
+
+  .modal {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 26px 22px;
+    max-width: 580px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn .3s cubic-bezier(.2,.9,.3,1.2);
+    position: relative;
+  }
+  @media (max-width: 500px) {
+    .modal { padding: 22px 16px; border-radius: 16px; }
+  }
+  @keyframes modalIn {
+    from { transform: scale(.9) translateY(20px); opacity: 0; }
+    to   { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .modal h3 {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 14px;
+  }
+
+  /* ---------- Form Fields Grid ---------- */
+  .field-grid {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .field-grid.two { grid-template-columns: 1fr 1fr; }
+  .field-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  @media (max-width: 500px) {
+    .field-grid.two,
+    .field-grid.three { grid-template-columns: 1fr; }
+  }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .field input,
+  .field select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    background: #fff;
+  }
+  .field input:focus,
+  .field select:focus {
+    border-color: var(--lemon-dark);
+    box-shadow: 0 0 0 3px rgba(255,242,0,.25);
+  }
+
+  /* ---------- Empty State ---------- */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .empty-state .icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 12px;
+    opacity: .5;
+  }
+
+  /* ---------- Toast ---------- */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 999px;
+    opacity: 0;
+    transition: all .3s ease;
+    z-index: 99999;
+    pointer-events: none;
+    max-width: calc(100vw - 40px);
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--green); }
+  .toast.error { background: var(--red); }
+
+  @media (max-width: 500px) {
+    .toast { bottom: 16px; font-size: 11px; padding: 10px 16px; }
+  }
+
+  /* ---------- Scrollbar ---------- */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #F0F0F0; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--lemon-dark);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--lemon-deep); }
+
+  /* ---------- Animations ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ---------- Utility ---------- */
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .mono {
+    font-family: 'SF Mono', 'Consolas', monospace;
+  }
+  .text-sm { font-size: 11px; color: var(--ink-soft); }
+  .text-xs { font-size: 10px; color: var(--ink-soft); }
+  .mt-2 { margin-top: 8px; }
+  .mt-3 { margin-top: 12px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div class="login-wrapper" id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="icon">
+        <img src="icons/icon128.png" alt="Lame VPN" onerror="this.style.display='none'; this.parentElement.textContent='🍋';" />
+      </div>
+      <h1>Lame VPN Admin</h1>
+      <p>Enter password to continue</p>
+    </div>
+
+    <div class="form-group">
+      <label for="passwordInput">Password</label>
+      <input type="password" id="passwordInput" placeholder="Enter admin password" autocomplete="current-password" />
+    </div>
+
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">🔓 Login</button>
+    <div class="login-error" id="loginError"></div>
+
+    <div class="login-footer">
+      Design By <a href="https://instagram.com/umr.rs" target="_blank">Umar Rehman</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ADMIN PANEL ============ -->
+<div id="adminPanel">
+
+  <header class="admin-header">
+    <div class="admin-brand">
+      <span class="icon">🍋</span>
+      <span>Lame VPN Admin</span>
+    </div>
+    <div class="header-right">
+      <div class="auth-status">✅ Authenticated</div>
+      <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('codes')">🎁 Codes</button>
+    <button class="tab" onclick="switchTab('servers')">🌍 Servers</button>
+  </div>
+
+  <!-- ============ TAB: CODES ============ -->
+  <div class="tab-content active" id="tab-codes">
+    <div class="container">
+      <div class="left-col">
+
+        <!-- Generate Codes -->
+        <div class="card">
+          <h2>🎁 Generate Codes</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Days</label>
+              <input type="number" id="genDays" value="30" min="1" max="3650" />
+            </div>
+            <div class="form-group">
+              <label>Max Devices</label>
+              <input type="number" id="genDevices" value="5" min="1" max="100" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>How Many Codes</label>
+            <input type="number" id="genCount" value="5" min="1" max="100" />
+          </div>
+          <button class="btn btn-primary" onclick="generateCodes()" id="genBtn">⚡ Generate Codes</button>
+        </div>
+
+        <!-- Extend Days -->
+        <div class="card">
+          <h2>➕ Extend Days</h2>
+          <div class="form-group">
+            <label>Code</label>
+            <input type="text" id="extendCode" placeholder="482915" maxlength="6" inputmode="numeric" />
+          </div>
+          <div class="form-group">
+            <label>Extra Days</label>
+            <input type="number" id="extendDays" value="30" min="1" max="365" />
+          </div>
+          <button class="btn btn-primary" onclick="extendCode()" id="extendBtn">➕ Extend Days</button>
+        </div>
+
+        <!-- Reduce Days -->
+        <div class="card">
+          <h2>➖ Reduce Days</h2>
+          <div class="form-group">
+            <label>Code</label>
+            <input type="text" id="reduceCode" placeholder="482915" maxlength="6" inputmode="numeric" />
+          </div>
+          <div class="form-group">
+            <label>Days to Reduce</label>
+            <input type="number" id="reduceDays" value="5" min="1" max="365" />
+          </div>
+          <button class="btn btn-dark" onclick="reduceCode()" id="reduceBtn">➖ Reduce Days</button>
+        </div>
+
+        <!-- Devices Management -->
+        <div class="card">
+          <h2>📱 Devices Management</h2>
+          <div class="form-group">
+            <label>Code</label>
+            <input type="text" id="devCode" placeholder="482915" maxlength="6" inputmode="numeric" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Extra Devices</label>
+              <input type="number" id="extraDevices" value="2" min="1" max="100" />
+            </div>
+            <div class="form-group">
+              <label>Reduce Devices</label>
+              <input type="number" id="reduceDevices" value="1" min="1" max="100" />
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <button class="btn btn-primary" onclick="extendDevices()" id="extendDevBtn">➕ Extend</button>
+            <button class="btn btn-dark" onclick="reduceDevicesFn()" id="reduceDevBtn">➖ Reduce</button>
+          </div>
+        </div>
+
+        <!-- App Banner -->
+        <div class="card">
+          <h2>📢 App Banner</h2>
+          <div class="form-group">
+            <label>Icon (emoji)</label>
+            <input type="text" id="bannerIcon" value="📢" maxlength="4" placeholder="📢" />
+          </div>
+          <div class="form-group">
+            <label>Message Text</label>
+            <textarea id="bannerText" placeholder="e.g. 3 days FREE Pro — code: LAME123" maxlength="120" rows="2"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Color</label>
+              <select id="bannerColor">
+                <option value="red">🔴 Red</option>
+                <option value="yellow">🟡 Yellow</option>
+                <option value="green">🟢 Green</option>
+                <option value="blue">🔵 Blue</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="bannerActive">
+                <option value="true">✅ ON</option>
+                <option value="false">❌ OFF</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="saveBanner()" id="saveBannerBtn">💾 Save Banner</button>
+        </div>
+
+        <!-- Search -->
+        <div class="card">
+          <h2>🔍 Search Code</h2>
+          <div class="form-group">
+            <input type="text" id="searchCode" placeholder="Enter code" maxlength="6" inputmode="numeric" />
+          </div>
+          <button class="btn btn-dark" onclick="searchCode()">Check Status</button>
+        </div>
+
+      </div>
+
+      <div class="right-col">
+        <div class="stats-row">
+          <div class="stat-box"><div class="num" id="statTotal">0</div><div class="lbl">Total</div></div>
+          <div class="stat-box"><div class="num" id="statActive">0</div><div class="lbl">Active</div></div>
+          <div class="stat-box"><div class="num" id="statUnused">0</div><div class="lbl">Unused</div></div>
+          <div class="stat-box"><div class="num" id="statExpired">0</div><div class="lbl">Expired</div></div>
+        </div>
+
+        <div class="card">
+          <h2>
+            📋 All Codes
+            <span class="badge" id="codesBadge">0</span>
+            <button class="btn btn-sm btn-primary" onclick="loadCodes()" style="margin-left:auto;">🔄 Refresh</button>
+          </h2>
+          <div class="table-wrap">
+            <table class="codes-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Status</th>
+                  <th>Devices</th>
+                  <th>Started</th>
+                  <th>Expires</th>
+                  <th>Days</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="codesBody">
+                <tr><td colspan="7" class="empty-state"><span class="icon">📭</span>No codes yet</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB: SERVERS ============ -->
+  <div class="tab-content" id="tab-servers">
+    <div class="card">
+      <h2>
+        🌍 All Servers
+        <span class="badge" id="serversBadge">0</span>
+        <button class="btn btn-sm btn-primary" onclick="openAddServer()" style="margin-left:auto;">➕ Add Server</button>
+        <button class="btn btn-sm btn-dark" onclick="loadServers()" style="margin-left:4px;">🔄 Refresh</button>
+      </h2>
+      <div class="table-wrap">
+        <table class="codes-table">
+          <thead>
+            <tr>
+              <th>Country</th>
+              <th>Host / Port</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="serversBody">
+            <tr><td colspan="6" class="empty-state"><span class="icon">🌍</span>Loading servers...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="detailsModal" hidden onclick="if(event.target===this) closeDetails()">
+  <div class="modal">
+    <div id="detailsContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================
+   CONFIG
+   ===================================================== */
+const API = "http://localhost:3000";
+let token = null;
+let currentTab = "codes";
+
+/* =====================================================
+   TOAST
+   ===================================================== */
+function showToast(msg, type = "") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast " + type;
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+/* =====================================================
+   TABS
+   ===================================================== */
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll(".tab").forEach((el, i) => {
+    el.classList.toggle("active", (i === 0 && tab === "codes") || (i === 1 && tab === "servers"));
+  });
+  document.querySelectorAll(".tab-content").forEach((el) => el.classList.remove("active"));
+  document.getElementById("tab-" + tab).classList.add("active");
+
+  if (tab === "servers") loadServers();
+  if (tab === "codes") loadCodes();
+}
+
+/* =====================================================
+   LOGIN
+   ===================================================== */
+async function doLogin() {
+  const password = document.getElementById("passwordInput").value;
+  if (!password) { showLoginError("Enter password"); return; }
+
+  const btn = document.getElementById("loginBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ Logging in...";
+
+  try {
+    const res = await fetch(`${API}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password })
+    });
+    const data = await res.json();
+
+    if (data.ok && data.token) {
+      token = data.token;
+      localStorage.setItem("lamevpn_admin_token", token);
+      showPanel();
+      showToast("✅ Logged in!", "success");
+    } else {
+      showLoginError(data.error || "Invalid password");
+    }
+  } catch (err) {
+    showLoginError("Backend not reachable");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "🔓 Login";
+  }
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById("loginError");
+  el.textContent = "❌ " + msg;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 3000);
+}
+
+function showPanel() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("adminPanel").classList.add("active");
+  loadCodes();
+  loadBanner();
+}
+
+function doLogout() {
+  if (!confirm("Logout?")) return;
+  token = null;
+  localStorage.removeItem("lamevpn_admin_token");
+  document.getElementById("loginScreen").style.display = "grid";
+  document.getElementById("adminPanel").classList.remove("active");
+  document.getElementById("passwordInput").value = "";
+  showToast("Logged out", "success");
+}
+
+/* =====================================================
+   API HELPER
+   ===================================================== */
+async function apiCall(endpoint, options = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`,
+    ...(options.headers || {})
+  };
+  const res = await fetch(`${API}${endpoint}`, { ...options, headers });
+  return res.json();
+}
+
+/* =====================================================
+   GENERATE CODES
+   ===================================================== */
+async function generateCodes() {
+  const days = parseInt(document.getElementById("genDays").value);
+  const maxDevices = parseInt(document.getElementById("genDevices").value);
+  const count = parseInt(document.getElementById("genCount").value);
+
+  const btn = document.getElementById("genBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ Generating...";
+
+  try {
+    const data = await apiCall("/api/admin/generate", {
+      method: "POST",
+      body: JSON.stringify({ days, maxDevices, count })
+    });
+
+    if (data.ok) {
+      showToast(`✅ ${data.codes.length} codes generated!`, "success");
+      try {
+        await navigator.clipboard.writeText(data.codes.join("\n"));
+        showToast("📋 Copied to clipboard!", "success");
+      } catch (e) {}
+      loadCodes();
+    } else {
+      showToast(data.error || "Failed", "error");
+      if (data.error === "Unauthorized") doLogout();
+    }
+  } catch (err) {
+    showToast("Network error", "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "⚡ Generate Codes";
+  }
+}
+
+/* =====================================================
+   EXTEND DAYS
+   ===================================================== */
+async function extendCode() {
+  const code = document.getElementById("extendCode").value.trim();
+  const extraDays = parseInt(document.getElementById("extendDays").value);
+  if (!code) { showToast("Enter a code", "error"); return; }
+
+  const btn = document.getElementById("extendBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ Extending...";
+
+  try {
+    const data = await apiCall("/api/admin/extend", {
+      method: "POST",
+      body: JSON.stringify({ code, extraDays })
+    });
+    if (data.ok) {
+      showToast(`✅ Extended by ${extraDays} days!`, "success");
+      document.getElementById("extendCode").value = "";
+      loadCodes();
+    } else {
+      showToast(data.error || "Failed", "error");
+    }
+  } catch (err) {
+    showToast("Network error", "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "➕ Extend Days";
+  }
+}
+
+/* =====================================================
+   REDUCE DAYS
+   ===================================================== */
+async function reduceCode() {
+  const code = document.getElementById("reduceCode").value.trim();
+  const reduceDays = parseInt(document.getElementById("reduceDays").value);
+  if (!code) { showToast("Enter a code", "error"); return; }
+  if (!confirm(`Reduce ${reduceDays} days from ${code}?`)) return;
+
+  const btn = document.getElementById("reduceBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ Reducing...";
+
+  try {
+    const data = await apiCall("/api/admin/reduce", {
+      method: "POST",
+      body: JSON.stringify({ code, reduceDays })
+    });
+    if (data.ok) {
+      showToast(`✅ Reduced by ${reduceDays} days!`, "success");
+      document.getElementById("reduceCode").value = "";
+      loadCodes();
+    } else {
+      showToast(data.error || "Failed", "error");
+    }
+  } catch (err) {
+    showToast("Network error", "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "➖ Reduce Days";
+  }
+}
+
+/* =====================================================
+   EXTEND DEVICES
+   ===================================================== */
+async function extendDevices() {
+  if (!token) { showToast("Login first", "error"); return; }
+
+  const code = document.getElementById("devCode").value.trim();
+  const extraDevices = parseInt(document.getElementById("extraDevices").value);
+
+  if (!code) { showToast("Enter a code", "error"); return; }
+  if (extraDevices < 1) { showToast("Enter valid number", "error"); return; }
+
+  const btn = document.getElementById("extendDevBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ ...";
+
+  try {
+    const data = await apiCall("/api/admin/extend-devices", {
+      method: "POST",
+      body: JSON.stringify({ code, extraDevices })
+    });
+
+    if (data.ok) {
+      showToast(`✅ Now ${data.maxDevices} devices allowed!`, "success");
+      document.getElementById("devCode").value = "";
+      loadCodes();
+    } else {
+      showToast(data.error || "Failed", "error");
+    }
+  } catch (err) {
+    showToast("Network error", "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "➕ Extend";
+  }
+}
+
+/* =====================================================
+   REDUCE DEVICES
+   ===================================================== */
+async function reduceDevicesFn() {
+  if (!token) { showToast("Login first", "error"); return; }
+
+  const code = document.getElementById("devCode").value.trim();
+  const reduceDevices = parseInt(document.getElementById("reduceDevices").value);
+
+  if (!code) { showToast("Enter a code", "error"); return; }
+  if (reduceDevices < 1) { showToast("Enter valid number", "error"); return; }
+
+  if (!confirm(`Reduce ${reduceDevices} devices from code ${code}?`)) return;
+
+  const btn = document.getElementById("reduceDevBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ ...";
+
+  try {
+    const data = await apiCall("/api/admin/reduce-devices", {
+      method: "POST",
+      body: JSON.stringify({ code, reduceDevices })
+    });
+
+    if (data.ok) {
+      if (data.maxDevices === data.minimumAllowed) {
+        showToast(`⚠️ Minimum reached — ${data.maxDevices} devices in use`, "error");
+      } else {
+        showToast(`✅ Now ${data.maxDevices} devices allowed!`, "success");
+      }
+      document.getElementById("devCode").value = "";
+      loadCodes();
+    } else {
+      showToast(data.error || "Failed", "error");
+    }
+  } catch (err) {
+    showToast("Network error", "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "➖ Reduce";
+  }
+}
+
+/* =====================================================
+   BANNER — LOAD
+   ===================================================== */
+async function loadBanner() {
+  if (!token) return;
+  try {
+    const data = await apiCall("/api/admin/banner");
+    if (data.ok && data.banner) {
+      document.getElementById("bannerIcon").value = data.banner.icon || "📢";
+      document.getElementById("bannerText").value = data.banner.text || "";
+      document.getElementById("bannerColor").value = data.banner.color || "red";
+      document.getElementById("bannerActive").value = String(data.banner.active || false);
+    }
+  } catch (err) {
+    console.error("Load banner failed:", err);
+  }
+}
+
+/* =====================================================
+   BANNER — SAVE
+   ===================================================== */
+async function saveBanner() {
+  if (!token) { showToast("Login first", "error"); return; }
+
+  const icon = document.getElementById("bannerIcon").value.trim() || "📢";
+  const text = document.getElementById("bannerText").value.trim();
+  const color = document.getElementById("bannerColor").value;
+  const active = document.getElementById("bannerActive").value === "true";
+
+  if (active && !text) {
+    showToast("Enter message text", "error");
+    return;
+  }
+
+  const btn = document.getElementById("saveBannerBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ Saving...";
+
+  try {
+    const data = await apiCall("/api/admin/banner", {
+      method: "POST",
+      body: JSON.stringify({ active, icon, text, color })
+    });
+
+    if (data.ok) {
+      showToast("✅ Banner saved! Users will see it in 5 min", "success");
+    } else {
+      showToast(data.error || "Failed", "error");
+    }
+  } catch (err) {
+    showToast("Network error", "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "💾 Save Banner";
+  }
+}
+
+/* =====================================================
+   LOAD CODES
+   ===================================================== */
+async function loadCodes() {
+  if (!token) return;
+
+  try {
+    const data = await apiCall("/api/admin/codes");
+    if (!data.ok) {
+      if (data.error === "Unauthorized") doLogout();
+      return;
+    }
+    renderCodes(data.codes);
+    renderStats(data.codes);
+  } catch (err) {
+    showToast("Network error", "error");
+  }
+}
+
+function renderCodes(codes) {
+  const tbody = document.getElementById("codesBody");
+  const badge = document.getElementById("codesBadge");
+
+  if (!codes || codes.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-state"><span class="icon">📭</span>No codes yet</td></tr>`;
+    badge.textContent = "0";
+    return;
+  }
+
+  badge.textContent = codes.length;
+  tbody.innerHTML = "";
+
+  codes.forEach((c) => {
+    const now = Date.now();
+    const devicesUsed = c.usedBy ? c.usedBy.length : 0;
+    const maxDevices = c.maxDevices || 5;
+    const isFull = devicesUsed >= maxDevices;
+    const isExpired = c.expiresAt && new Date(c.expiresAt).getTime() < now;
+    const isUnused = !c.startedAt;
+
+    let status = "active";
+    let statusLabel = "Active";
+    if (isExpired) { status = "expired"; statusLabel = "Expired"; }
+    else if (isUnused) { status = "unused"; statusLabel = "Unused"; }
+    else if (isFull) { status = "full"; statusLabel = "Full"; }
+
+    const devicePercent = Math.min(100, (devicesUsed / maxDevices) * 100);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><span class="code-cell" onclick="copyCode('${c.code}')">${c.code}</span></td>
+      <td><span class="status-pill ${status}">${statusLabel}</span></td>
+      <td>
+        <div class="device-bar">
+          <div class="device-bar-inner ${isFull ? 'full' : ''}" style="width:${devicePercent}%"></div>
+        </div>
+        <span style="font-weight:800;">${devicesUsed}/${maxDevices}</span>
+      </td>
+      <td style="font-size:11px; color:#52606D;">${c.startedAt ? formatDate(c.startedAt) : "—"}</td>
+      <td style="font-size:11px; color:#52606D;">${c.expiresAt ? formatDate(c.expiresAt) : "—"}</td>
+      <td style="font-weight:800; color:#C9A500;">${c.days || 30}d</td>
+      <td style="white-space:nowrap;">
+        <button class="btn btn-sm btn-primary" onclick="viewDetails('${c.code}')" title="View">👁</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteCode('${c.code}')" title="Delete">🗑</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderStats(codes) {
+  const now = Date.now();
+  let active = 0, unused = 0, expired = 0;
+
+  codes.forEach((c) => {
+    const isExpired = c.expiresAt && new Date(c.expiresAt).getTime() < now;
+    if (isExpired) expired++;
+    else if (!c.startedAt) unused++;
+    else active++;
+  });
+
+  document.getElementById("statTotal").textContent = codes.length;
+  document.getElementById("statActive").textContent = active;
+  document.getElementById("statUnused").textContent = unused;
+  document.getElementById("statExpired").textContent = expired;
+}
+
+/* =====================================================
+   UTILITIES
+   ===================================================== */
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined, { day: "2-digit", month: "short", year: "numeric" });
+}
+
+async function copyCode(code) {
+  try {
+    await navigator.clipboard.writeText(code);
+    showToast(`📋 Copied: ${code}`, "success");
+  } catch (e) {
+    showToast("Copy failed", "error");
+  }
+}
+
+/* =====================================================
+   VIEW DETAILS
+   ===================================================== */
+async function viewDetails(code) {
+  if (!token) return;
+  try {
+    const data = await apiCall(`/api/admin/code/${code}`);
+    if (data.ok) showCodeDetails(data.code);
+  } catch (err) {}
+}
+
+function showCodeDetails(code) {
+  const now = Date.now();
+  const devicesUsed = code.usedBy ? code.usedBy.length : 0;
+  const isExpired = code.expiresAt && new Date(code.expiresAt).getTime() < now;
+
+  const html = `
+    <h3>📋 Code Details</h3>
+    <div style="background:#FFFDF0;padding:16px;border-radius:10px;margin-bottom:12px;border:1.5px dashed #E6C200;text-align:center;">
+      <div style="font-size:10px;font-weight:800;color:#52606D;letter-spacing:1px;">CODE</div>
+      <div style="font-family:'Consolas',monospace;font-size:32px;font-weight:900;letter-spacing:4px;margin-top:4px;">${code.code}</div>
+    </div>
+    <div style="font-size:13px;line-height:1.9;">
+      <div><strong>Status:</strong> ${isExpired ? "❌ Expired" : (devicesUsed >= code.maxDevices ? "🔴 Full" : (code.startedAt ? "✅ Active" : "⏳ Unused"))}</div>
+      <div><strong>Duration:</strong> ${code.days} days</div>
+      <div><strong>Devices:</strong> ${devicesUsed}/${code.maxDevices}</div>
+      <div><strong>Started:</strong> ${code.startedAt ? formatDate(code.startedAt) : "Not yet used"}</div>
+      <div><strong>Expires:</strong> ${code.expiresAt ? formatDate(code.expiresAt) : "—"}</div>
+      <div><strong>Created:</strong> ${formatDate(code.createdAt)}</div>
+      ${devicesUsed > 0 ? `
+        <div style="margin-top:14px;">
+          <strong>Devices:</strong>
+          <div style="font-family:'Consolas',monospace;font-size:10px;background:#F8F9FA;padding:10px;border-radius:6px;margin-top:6px;max-height:120px;overflow:auto;">
+            ${code.usedBy.map((d, i) => `${i + 1}. ${d}`).join("<br>")}
+          </div>
+        </div>
+      ` : ""}
+    </div>
+    <button class="btn btn-dark" onclick="closeDetails()" style="margin-top:16px;">Close</button>
+  `;
+
+  document.getElementById("detailsContent").innerHTML = html;
+  document.getElementById("detailsModal").hidden = false;
+}
+
+async function deleteCode(code) {
+  if (!confirm(`⚠️ Delete code ${code}?\n\nThis will remove Pro from all devices using this code.`)) return;
+  try {
+    const data = await apiCall(`/api/admin/codes/${code}`, { method: "DELETE" });
+    if (data.ok) {
+      showToast(`🗑 Deleted — Pro removed from ${data.removedFromDevices || 0} device(s)`, "success");
+      loadCodes();
+    }
+  } catch (err) { showToast("Error", "error"); }
+}
+
+/* =====================================================
+   SERVERS
+   ===================================================== */
+async function loadServers() {
+  if (!token) return;
+  try {
+    const data = await apiCall("/api/admin/servers");
+    if (data.ok) renderServers(data.servers);
+  } catch (err) { console.error(err); }
+}
+
+function renderServers(servers) {
+  const tbody = document.getElementById("serversBody");
+  const badge = document.getElementById("serversBadge");
+
+  if (!servers || servers.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><span class="icon">🌍</span>No servers yet — click "Add Server"</td></tr>`;
+    badge.textContent = "0";
+    return;
+  }
+
+  badge.textContent = servers.length;
+  tbody.innerHTML = "";
+
+  servers.forEach((s) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <strong>${s.name}</strong>
+        <div style="font-size:10px;color:#52606D;">${s.city} · <code>${s.code}</code></div>
+      </td>
+      <td>
+        <div style="font-family:'Consolas',monospace;font-size:11px;">${s.host}</div>
+        <div style="font-size:10px;color:#52606D;">:${s.port} · ${s.scheme}</div>
+      </td>
+      <td><span class="status-pill ${s.isPremium ? 'pro' : 'free'}">${s.isPremium ? '👑 PRO' : '🆓 FREE'}</span></td>
+      <td><span class="status-pill ${s.active ? 'active' : 'expired'}">${s.active ? '● Active' : '○ Off'}</span></td>
+      <td><strong>${s.priority || 0}</strong></td>
+      <td style="white-space:nowrap;">
+        <button class="btn btn-sm btn-primary" onclick="editServer('${s.code}')" title="Edit">✏️</button>
+        <button class="btn btn-sm btn-dark" onclick="togglePremium('${s.code}')" title="Toggle Free/Pro">👑</button>
+        <button class="btn btn-sm btn-dark" onclick="toggleActive('${s.code}')" title="Toggle Active">⏻</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteServer('${s.code}')" title="Delete">🗑</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function openAddServer() {
+  document.getElementById("detailsContent").innerHTML = `
+    <h3>🌍 Add New Server</h3>
+    <div class="field-grid two">
+      <div class="field">
+        <label>Code (2-3 letters)</label>
+        <input id="srvCode" placeholder="de" maxlength="3" />
+      </div>
+      <div class="field">
+        <label>Priority (higher = top)</label>
+        <input id="srvPriority" type="number" value="0" />
+      </div>
+    </div>
+    <div class="field-grid two">
+      <div class="field">
+        <label>Country Name</label>
+        <input id="srvName" placeholder="Germany" />
+      </div>
+      <div class="field">
+        <label>City</label>
+        <input id="srvCity" placeholder="Frankfurt" />
+      </div>
+    </div>
+    <div class="field-grid">
+      <div class="field">
+        <label>Host / IP</label>
+        <input id="srvHost" placeholder="de.proxy.lamevpn.app" />
+      </div>
+    </div>
+    <div class="field-grid three">
+      <div class="field">
+        <label>Port</label>
+        <input id="srvPort" type="number" value="1080" />
+      </div>
+      <div class="field">
+        <label>Scheme</label>
+        <select id="srvScheme">
+          <option value="socks5">socks5</option>
+          <option value="http">http</option>
+          <option value="https">https</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Type</label>
+        <select id="srvPremium">
+          <option value="false">FREE</option>
+          <option value="true">PRO</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-grid two">
+      <div class="field">
+        <label>Username (optional)</label>
+        <input id="srvUsername" placeholder="" />
+      </div>
+      <div class="field">
+        <label>Password (optional)</label>
+        <input id="srvPassword" type="text" placeholder="" />
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="saveServer()" id="saveServerBtn" style="margin-top:8px;">💾 Save Server</button>
+    <button class="btn btn-dark" onclick="closeDetails()" style="margin-top:8px;">Cancel</button>
+  `;
+  document.getElementById("detailsContent").dataset.mode = "add";
+  document.getElementById("detailsModal").hidden = false;
+}
+
+async function editServer(code) {
+  try {
+    const data = await apiCall("/api/admin/servers");
+    if (!data.ok) return;
+    const server = data.servers.find(s => s.code === code);
+    if (!server) return;
+
+    openAddServer();
+    document.getElementById("srvCode").value = server.code;
+    document.getElementById("srvCode").disabled = true;
+    document.getElementById("srvName").value = server.name;
+    document.getElementById("srvCity").value = server.city;
+    document.getElementById("srvHost").value = server.host;
+    document.getElementById("srvPort").value = server.port;
+    document.getElementById("srvScheme").value = server.scheme;
+    document.getElementById("srvPremium").value = String(server.isPremium);
+    document.getElementById("srvUsername").value = server.username || "";
+    document.getElementById("srvPassword").value = server.password || "";
+    document.getElementById("srvPriority").value = server.priority || 0;
+    document.getElementById("detailsContent").dataset.mode = "edit";
+  } catch (err) {}
+}
+
+async function saveServer() {
+  const mode = document.getElementById("detailsContent").dataset.mode;
+  const code = document.getElementById("srvCode").value.trim().toLowerCase();
+  const name = document.getElementById("srvName").value.trim();
+  const city = document.getElementById("srvCity").value.trim();
+  const host = document.getElementById("srvHost").value.trim();
+  const port = parseInt(document.getElementById("srvPort").value);
+  const scheme = document.getElementById("srvScheme").value;
+  const isPremium = document.getElementById("srvPremium").value === "true";
+  const username = document.getElementById("srvUsername").value.trim();
+  const password = document.getElementById("srvPassword").value.trim();
+  const priority = parseInt(document.getElementById("srvPriority").value) || 0;
+
+  if (!code || !name || !city || !host) {
+    alert("Please fill code, name, city, and host");
+    return;
+  }
+
+  const btn = document.getElementById("saveServerBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ Saving...";
+
+  try {
+    let data;
+    if (mode === "add") {
+      data = await apiCall("/api/admin/servers", {
+        method: "POST",
+        body: JSON.stringify({ code, name, city, host, port, scheme, isPremium, username, password, priority })
+      });
+    } else {
+      data = await apiCall(`/api/admin/servers/${code}`, {
+        method: "PUT",
+        body: JSON.stringify({ name, city, host, port, scheme, isPremium, username, password, priority })
+      });
+    }
+
+    if (data.ok) {
+      showToast("✅ Server saved!", "success");
+      closeDetails();
+      loadServers();
+    } else {
+      alert(data.error || "Failed to save");
+    }
+  } catch (err) {
+    alert("Network error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "💾 Save Server";
+  }
+}
+
+async function togglePremium(code) {
+  try {
+    const data = await apiCall(`/api/admin/servers/${code}/toggle-premium`, { method: "POST" });
+    if (data.ok) { showToast("✅ Type toggled", "success"); loadServers(); }
+  } catch (err) {}
+}
+
+async function toggleActive(code) {
+  try {
+    const data = await apiCall(`/api/admin/servers/${code}/toggle-active`, { method: "POST" });
+    if (data.ok) { showToast("✅ Status toggled", "success"); loadServers(); }
+  } catch (err) {}
+}
+
+async function deleteServer(code) {
+  if (!confirm(`Delete server "${code}"?`)) return;
+  try {
+    const data = await apiCall(`/api/admin/servers/${code}`, { method: "DELETE" });
+    if (data.ok) { showToast("🗑 Deleted", "success"); loadServers(); }
+  } catch (err) {}
+}
+
+/* =====================================================
+   SEARCH CODE
+   ===================================================== */
+async function searchCode() {
+  const code = document.getElementById("searchCode").value.trim().toUpperCase();
+  if (!code) { showToast("Enter a code", "error"); return; }
+
+  try {
+    const data = await apiCall(`/api/admin/code/${code}`);
+    if (data.ok) {
+      showCodeDetails(data.code);
+    } else {
+      showToast(data.error || "Code not found", "error");
+    }
+  } catch (err) {
+    showToast("Network error", "error");
+  }
+}
+
+function closeDetails() {
+  document.getElementById("detailsModal").hidden = true;
+}
+
+/* =====================================================
+   AUTO LOGIN
+   ===================================================== */
+window.addEventListener("DOMContentLoaded", async () => {
+  const saved = localStorage.getItem("lamevpn_admin_token");
+  if (saved) {
+    token = saved;
+    try {
+      const res = await fetch(`${API}/api/auth/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        showPanel();
+        return;
+      }
+    } catch (e) {}
+    localStorage.removeItem("lamevpn_admin_token");
+    token = null;
+  }
+});
+
+document.getElementById("passwordInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") doLogin();
+});
+</script>
+
+</body>
+</html>
